@@ -316,3 +316,63 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('react-root'));
+
+
+
+
+
+
+
+import React, {useState} from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  //const tocken = "b19b6981aa50853560061b1b99e62b8198faa03d";
+
+  const [message, setMessage] = useState("");
+  const [dataQ, setData] = useState([]);
+
+  function renderQuery(q) {
+  		setMessage(q);
+  		if (q != "") {
+  			fetch("https://api.github.com/search/repositories?q="+q).then(data => {
+				return data.json();
+			}).then(data=> {
+
+				setData(data.items);
+			})
+  		}
+  	
+
+  }
+
+  function renderList () {
+  	if (dataQ && dataQ.length) {
+  		let d = dataQ;
+  		if (dataQ.length > 6) {
+  			d  = dataQ.slice(0, 5);
+  		}
+  		return d.map((item) => {
+			return (<div key ={item.id}>{item.full_name}</div>)
+		}) ;
+  	} else {
+  		return null;
+  	}
+  	
+  }
+  return (
+    <div className="App">
+      <input
+         type="text"
+         value={message}
+         placeholder="Enter a message"
+         onChange={e => renderQuery(e.target.value)}
+       />
+       {renderList()}
+    </div>
+  );
+}
+
+export default App;
+
