@@ -375,4 +375,32 @@ function App() {
 }
 
 export default App;
+	
+	function UserList(props) {
+  const {users} = props;
+  return users.map(user=> {
+    return (
+      <li tabindex={0} key={user.id}>{user.name}</li>
+    )
+  })
+}
+
+
+function Users() {
+  const APPURL = "https://jsonplaceholder.typicode.com/users";
+  const [users, setUsers] = React.useState([]);
+  function getUsers() {
+    fetch(APPURL).then(users => users.json()).then(users => setUsers(users));
+  }
+  return (
+    <main className="App">
+      <h1>User Management</h1>
+      <button onClick={getUsers} style={btnStyle}>Get Users</button>
+      <div>
+        <UserList users={users} />
+      </div>
+    </main>
+    
+  )
+}
 
