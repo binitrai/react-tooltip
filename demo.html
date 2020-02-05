@@ -320,6 +320,68 @@ var accordion = (function(){
   $(document).ready(function(){
     accordion.init({ speed: 300, oneOpen: true });
   });
+ const tbl2CSV = function(table, ignoreColNo, ignoreRowNo, isDownload) {
+  // if you do not want to include some rows or column from your html table in csv,
+  // pass in 2nd and 3rd param, both are array
+  // e.g UCUTIL.tbl2CSV("#table_id", [0,1], [1]);
+  var isDownload  = isDownload  || 1;
+  var ignoreRowNo = ignoreRowNo || [];
+  var ignoreColNo = ignoreColNo || [];
+  var cleanText = function(t){
+    t = t.replace(/"/g, '""');
+    return '"'+t+'"';
+  };
+  var table   = $(table);
+  var caption = table.find('caption').text();
+  var title   = [];
+  var rows    = [];
+  table.find('tr').each(function(i) {
+    if ($.inArray(i, ignoreRowNo) == -1) {
+      var data = [];
+      var tr   = $(this);
+      tr.find('th, td').each(function(i) {
+        if ($.inArray(i, ignoreColNo) == -1) {
+          if ($(this).hasAttr('data-from-attr')) {
+            var text = cleanText($(this).attr('data-from-attr').trim()).trim();
+          } else if ($(this).hasAttr('data-from-func')) {
+            var funcName = $(this).attr('data-from-func');
+            var text = cleanText(window[funcName]($(this)));
+          } else {
+            var text = cleanText($(this).text().trim()).trim();
+          }
+          data.push(text);
+        }
+      });
+      data = data.join(",");
+      rows.push(data);
+    }
+  });
+  rows = rows.join("\n");
+  var csv = rows;
+  if (isDownload === 1) {
+    this.downloadCSV(csv, caption);
+  } else {
+    return csv;
+  }
+};
+
+const downloadCSV = function(csv, caption) {
+  var caption = caption || "";
+  var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  var d = document;
+  var download_link = d.createElement('a');
+  download_link.href = uri;
+  var ts = new Date().getTime();
+  download_link.download = caption == "" ? ts+".csv" : caption+"-"+ts+".csv";
+  d.body.appendChild(download_link);
+  download_link.click();
+  d.body.removeChild(download_link);
+};
+    
+var cleanText = function(t){
+    t = t.replace(/"/g, '""');
+    return '"'+t+'"';
+  };
 </script>
 </body>
 </html>
