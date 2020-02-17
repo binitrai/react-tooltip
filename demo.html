@@ -408,3 +408,39 @@ module.exports = function (config, env) {
 </script>
 </body>
 </html>
+    
+    
+    
+    
+    
+    
+    
+    
+    <html>
+    <head>
+        <script src="https://amp.akamaized.net/hosted/1.0/player.esi?apikey=samples&format=script&version=4.115.7"></script>
+    </head>
+    <body>
+        <div id="amp"></div>
+        <script>
+            var config = {
+                autoplay: true,
+                autoplayPolicy: "muted",
+                media: {
+                 source: [ {src: "https://akamtrans-a.akamaihd.net/delivery/20/35/2035ef57-5cac-4d23-ab88-6366e9c24e6a/value-of-cmaf-in-the-drive-towards-ott-interoperability3d81e38c-2cad-336d-e2ee-4131c52ad3d4.m3u8", type: "application/x-mpegURL"} ]
+				}
+            };
+
+            var amp = akamai.amp.AMP.create("amp", config);
+        </script>
+
+      <style type="text/css">		  
+          .sample {  border-style: none;    width:640px;    height: 360px;  }
+		  body { height: 50%;padding: 20px; margin: auto;text-align: left; }		  
+			/* AMP Player Style Overrides */
+			.amp-controls {	background-color: rgba(0, 0, 0, 1.0) !important; }
+          .amp-share.amp-icon{display:none}
+		</style>
+      
+    </body>
+</html>
